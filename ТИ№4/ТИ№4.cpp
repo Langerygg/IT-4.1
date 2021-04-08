@@ -9,8 +9,6 @@ using namespace std;
 
 int n;
 void getN(string code);
-string getCode();
-bool CorrectCode(string code);
 string Coding(string code);
 bool CheckBitValue(string block, int index);
 string Decoding(string coded);
@@ -45,30 +43,6 @@ void getN(string code) {
 		cin >> n;
 	} while (n < 1 || (code.length() % n) != 0);
 }
-
-//string getCode() {
-//	string code;
-//	do
-//	{
-//		cout << "Введите код для шифрования: ";
-//		cin >> code;
-//	} while (!CorrectCode(code));
-//	return code;
-//}
-
-//bool CorrectCode(string code) {
-//	if (code.length() < 1) {
-//		return false;
-//	}
-//	for (int i = 0; i < code.length(); i++)
-//	{
-//		if (code[i] != '0' && code[i] != '1')
-//		{
-//			return false;
-//		}
-//	}
-//	return true;
-//}
 
 string Coding(string code) {
 	vector<string> coded(ceil(double(code.length()) / double(n)), "");
