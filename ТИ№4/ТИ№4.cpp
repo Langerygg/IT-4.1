@@ -17,17 +17,23 @@ string Decoding(string coded);
 string DeleteCheckBit(string code);
 string Interference(string coded);
 char Swap(char symb);
+string ASCIIToBinary(string str);
+string BinaryToASCII(string str);
+
 
 int main()
 {
 	system("chcp 1251");
-	string code = getCode();
+	string code = "";
+	cin >> code;
+	code = ASCIIToBinary(code);
 	getN(code);
 	string coded = Coding(code);
 	cout << "\nКод без разделения на блоки (результат кодирования): " << coded << "\n";
 	coded = Interference(coded);
 	cout << "Код без разделения на блоки (результат внесения помех): " << coded << "\n";
 	string decoded = Decoding(coded);	
+	decoded = BinaryToASCII(decoded);
 	cout << "\nКод без разбеления на блоки с удаленными проверочными битами (результат декодирования): " << decoded << "\n\n";
 	return 0;
 }
@@ -40,29 +46,29 @@ void getN(string code) {
 	} while (n < 1 || (code.length() % n) != 0);
 }
 
-string getCode() {
-	string code;
-	do
-	{
-		cout << "Введите код для шифрования: ";
-		cin >> code;
-	} while (!CorrectCode(code));
-	return code;
-}
+//string getCode() {
+//	string code;
+//	do
+//	{
+//		cout << "Введите код для шифрования: ";
+//		cin >> code;
+//	} while (!CorrectCode(code));
+//	return code;
+//}
 
-bool CorrectCode(string code) {
-	if (code.length() < 1) {
-		return false;
-	}
-	for (int i = 0; i < code.length(); i++)
-	{
-		if (code[i] != '0' && code[i] != '1')
-		{
-			return false;
-		}
-	}
-	return true;
-}
+//bool CorrectCode(string code) {
+//	if (code.length() < 1) {
+//		return false;
+//	}
+//	for (int i = 0; i < code.length(); i++)
+//	{
+//		if (code[i] != '0' && code[i] != '1')
+//		{
+//			return false;
+//		}
+//	}
+//	return true;
+//}
 
 string Coding(string code) {
 	vector<string> coded(ceil(double(code.length()) / double(n)), "");
@@ -93,7 +99,6 @@ string Coding(string code) {
 		int powOf2 = 0, index = 0, j = 0;
 		while ((index - powOf2) != oldCodeBlock.length())
 		{
-			//cout << " " << index + 1 << " " << pow(2, powOf2) << "  ";
 			if ((index + 1) == pow(2, powOf2))
 			{
 				coded[i].push_back('0');
@@ -320,6 +325,39 @@ string DeleteCheckBit(string code) {
 		else {
 			powOf2++;
 		}
+	}
+	return result;
+}
+
+string ASCIIToBinary(string str) {
+	string result = "";
+	for (int i = 0; i < str.length(); i++)
+	{
+		char c = str[i];
+		for (int j = 7; j >= 0; j--) {
+			if ((c >> j) & 1) {
+				result.push_back('1');
+			}
+			else result.push_back('0');
+		}
+	}
+	return result;
+}
+
+string BinaryToASCII(string str) {
+	int leng = str.length() / 8;
+	string result = "";
+	for (int i = 0; i < leng; i++)
+	{
+		char c = 0;
+		for (int j = 0; j < 8; j++)
+		{
+			if (str[i * 8 + 7 - j] == '1')
+			{
+				c += 1 << j;
+			}
+		}
+		result.push_back(c);
 	}
 	return result;
 }
